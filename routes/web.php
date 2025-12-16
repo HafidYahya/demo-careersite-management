@@ -13,7 +13,12 @@ Route::get('/', function () {
     $footer = Footer::all();
     $home = Home::all();
     $about = Home::where('section_name', 'about')->get()->keyBy('sub_section');
-    return view('alfa-karir.home', compact('navbar', 'footer', 'home', 'about'));
+    $core_values = Home::where('section_name', 'core_values')->get()->keyBy('sub_section');
+    $kata_alfanesia = Home::where('section_name', 'kata_alfanesia')->get()->map(function($item) {$item->sub_section = trim($item->sub_section);
+        return $item;
+    })->keyBy('sub_section');
+    $tagline_join = Home::where('section_name', 'tagline_join')->get()->keyBy('sub_section');
+    return view('alfa-karir.home', compact('navbar', 'footer', 'home', 'about', 'core_values', 'kata_alfanesia', 'tagline_join'));
 })->name('index');
 Route::get('/admin', function () {
     return view('careersite.content-management');
